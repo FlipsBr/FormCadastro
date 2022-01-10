@@ -1,0 +1,49 @@
+Flávia => x / Bolo / Suco de Laranja
+Helen => Salada / não sorvete / y
+Gabriela => z / k / Suco de Morango
+
+Filé => Não suco de morango
+
+Flávia => Filé / Bolo / Suco de Laranja
+Helen => Salada / não sorvete / y
+Gabriela => z / k / Suco de Morango
+
+Por exclusão...
+
+Flávia => Filé / Bolo / Suco de Laranja
+Helen => Salada / não sorvete / y
+Gabriela => Nhoque / k / Suco de Morango
+
+
+
+
+Flávia => Filé / Bolo / Suco de Laranja
+Helen => Salada / Pudim / Suco de Abacaxi..
+Gabriela => Nhoque / Sorvete / Suco de Morango
+
+
+
+--------------------------------------------
+
+
+Menta = 2*Morango
+
+depois
+
+Menta - 5 = 3*(Morango - 5)
+
+2* Morango - 5 = 3 Morango - 15
+
+Morango = 10
+
+
+---------------------------------------------
+
+
+Soldadas = 300
+
+F.Amarela = 3*Malária
+
+F.Amarela  intersecção Malária = 45
+
+F.Amarela - MAlária = 25
