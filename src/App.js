@@ -2,6 +2,8 @@ import { Container, Typography } from "@material-ui/core";
 import "./App.css";
 import FormularioCadastro from "./components/FormularioCadastro/FormularioCadastro";
 import "fontsource-roboto";
+import { validarCPF, validarSenha, validarNome } from "./models/cadastro";
+import ValidacoesCadastro from "./context/validacoesCadastro";
 
 function App() {
   return (
@@ -9,19 +11,18 @@ function App() {
       <Typography variant="h3" component="h1" align="center">
         Formulário de Cadastro
       </Typography>
-      <FormularioCadastro aoEnviar={aoEnviarForm} validarCPF={validarCPF} />
+      <ValidacoesCadastro.Provider
+        value={{ CPF: validarCPF, senha: validarSenha, nome: validarNome }}
+      >
+        {/* o contextProvider serve para você passar funções de validação para um componente sem que todos os filhos do componente saibam da existência dele. */}
+        <FormularioCadastro aoEnviar={aoEnviarForm} />
+      </ValidacoesCadastro.Provider>
     </Container>
   );
 }
 
 function aoEnviarForm(dados) {
   console.log(dados);
-}
-
-function validarCPF(CPF) {
-  if (CPF.length !== 11)
-    return { valido: false, texto: "CPF deve ter 11 dígitos." };
-  else return { valido: true, texto: "" };
 }
 
 export default App;

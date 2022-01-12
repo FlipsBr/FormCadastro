@@ -1,103 +1,60 @@
-import React, { useState } from "react";
-import { Button, TextField, Switch, FormControlLabel } from "@material-ui/core";
+import { Step, StepLabel, Typography, Stepper } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import DadosEntrega from "./DadosEntrega";
+import DadosPessoais from "./DadosPessoais";
+import DadosUsuarios from "./DadosUsuarios";
 
-export default function FormularioCadastro({ aoEnviar, validarCPF }) {
-  const [nome, setNome] = useState("");
-  const [sobrenome, setSobrenome] = useState("");
-  const [CPF, setCPF] = useState("");
-  const [novidades, setNovidades] = useState(true);
-  const [promocoes, setPromocoes] = useState(false);
-  const [erros, setErros] = useState({
-    CPF: {
-      /* o estado PRECISA ser inicializado. */
-      valido: true,
-      texto: "",
-    },
+export default function FormularioCadastro({ aoEnviar, validacoes }) {
+  const [etapaAtual, setEtapaAtual] = useState(0);
+  const [dadosColetados, setDados] = useState({});
+  useEffect(() => {
+    if (etapaAtual === formulario.length - 1) {
+      aoEnviar(dadosColetados);
+    }
+    console.log(dadosColetados);
   });
 
+  const formulario = [
+    <DadosUsuarios aoEnviar={coletarDados} />,
+    <DadosPessoais aoEnviar={coletarDados} />,
+    <DadosEntrega aoEnviar={coletarDados} />,
+    <Typography variant="h5">Obrigado pelo cadastro!</Typography>,
+  ];
+  function coletarDados(dados) {
+    setDados({ ...dadosColetados, ...dados });
+    console.log(dados);
+    /* spread operator para sempre adicionar mais estados. */
+    proximo();
+  }
+
+  function proximo() {
+    setEtapaAtual(etapaAtual + 1);
+  }
+
+  /* aoEnviar, ValidarCPF como props?? */
   return (
-    <form
-      onSubmit={(ev) => {
-        ev.preventDefault();
-        aoEnviar({ nome, sobrenome, CPF, novidades, promocoes });
-      }}
-    >
-      {/* Começo de área de conteúdo escrito*/}
-      <TextField
-        id="Nome"
-        value={nome} /* value é somente para consultas... */
-        onChange={(ev) => {
-          setNome(ev.target.value); /* é o setState quem define as variáveis */
-        }}
-        label="Nome"
-        variant="outlined"
-        margin="normal"
-        fullWidth
-      />
-
-      <TextField
-        id="Sobrenome"
-        label="Sobrenome"
-        value={sobrenome} /* value é somente para consultas... */
-        onChange={(ev) => {
-          setSobrenome(
-            ev.target.value
-          ); /* é o setState quem define as variáveis */
-        }}
-        variant="outlined"
-        margin="normal"
-        fullWidth
-      />
-
-      <TextField
-        id="CPF"
-        label="CPF"
-        value={CPF}
-        onChange={(ev) => {
-          setCPF(ev.target.value); /* é o setState quem define as variáveis */
-        }}
-        onBlur={(ev) => {
-          const ehValido = validarCPF(ev.target.value);
-          setErros({ CPF: ehValido });
-        }}
-        error={!erros.CPF.valido}
-        helperText={erros.CPF.texto}
-        variant="outlined"
-        margin="normal"
-        fullWidth
-      />
-      {/* Fim de área de conteúdo escrito*/}
-
-      <FormControlLabel /* FormControlLabel serve literalmente só para colocar uma label em um objeto mais abstrato como um switch. */
-        label="Promoções"
-        control={
-          <Switch
-            name="Promoções"
-            checked={promocoes}
-            onChange={(ev) => {
-              setPromocoes(ev.target.checked);
-            }}
-            color="primary"
-          />
-        }
-      />
-      <FormControlLabel
-        label="Novidades"
-        control={
-          <Switch
-            name="Novidades"
-            checked={novidades}
-            onChange={(ev) => {
-              setNovidades(ev.target.checked);
-            }}
-            color="primary"
-          />
-        }
-      />
-
-      <Button variant="contained" color="primary" type="submit">
-        Cadastrar
-      </Button>
-    </form>
+    <>
+      <Stepper activeStep={etapaAtual}>
+        <Step>
+          <StepLabel>Login</StepLabel>
+        </Step>
+        <Step>
+          <StepLabel>Pessoal</StepLabel>
+        </Step>
+        <Step>
+          <StepLabel>Entrega</StepLabel>
+        </Step>
+        <Step>
+          <StepLabel>Finalização</StepLabel>
+        </Step>
+      </Stepper>
+      {formulario[etapaAtual]}
+    </>
   );
 }
+
+//
+
+/*     <DadosPessoais aoEnviar={aoEnviar} validarCPF={validarCPF} />
+      <DadosUsuarios />
+      <DadosEntrega />*/
